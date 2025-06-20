@@ -1,0 +1,51 @@
+{
+    "name": "seu-post-meu-like",
+    "version": "1.0.0",
+    "description": "Aplicativo multiplataforma com systray usando Electron e TypeScript",
+    "main": "dist/main.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "npm run build && electron .",
+        "dev": "tsc && electron . --dev",
+        "pack": "electron-builder",
+        "dist": "npm run build && electron-builder"
+    },
+    "keywords": [
+        "electron",
+        "typescript",
+        "systray",
+        "desktop"
+    ],
+    "author": "Seu Nome",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "electron": "^27.0.0",
+        "electron-builder": "^24.0.0",
+        "typescript": "^5.0.0"
+    },
+    "build": {
+        "appId": "br.com.solmorcillo.seupostmeulike",
+        "productName": "Seu Post Meu Like",
+        "directories": {
+            "output": "release"
+        },
+        "files": [
+            "dist/**/*",
+            "assets/**/*",
+            "node_modules/**/*"
+        ],
+        "win": {
+            "target": "nsis",
+            "icon": "assets/icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "assets/icon.icns"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "assets/icon.png"
+        }
+    }
+}

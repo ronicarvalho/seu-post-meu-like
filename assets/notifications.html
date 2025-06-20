@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações - Seu Post Meu Like</title>
+    <link rel="icon" type="image/png" href="youpostmylike-transparent.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .window-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .minimize-btn {
+            background: #ffbd2e;
+            color: #995700;
+        }
+
+        .close-btn {
+            background: #ff5f57;
+            color: #bf0711;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .drag-region {
+            -webkit-app-region: drag;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 60px;
+            height: 50px;
+            z-index: 999;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-icon {
+            width: 68px;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8em;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+            margin: 5px 0 0 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .notifications-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .notifications-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .notifications-header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            padding-right: 5px;
+            height: calc(100vh - 320px); /* Altura fixa para ocupar o retângulo vermelho */
+            margin-bottom: 20px; /* Margem reduzida para aproximar o rodapé */
+        }
+
+        /* Scroll customizado - só aparece no hover */
+        .notifications-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notifications-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notifications-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notifications-list:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+
+        .notifications-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Para Firefox */
+        .notifications-list {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+
+        .notification-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .post-author {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .visit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .like-btn {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
+        }
+
+        .like-btn.liked {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .empty-state h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1em;
+        }
+
+        @media (max-width: 768px) {
+            .notification-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .post-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="drag-region"></div>
+    <div class="window-controls">
+        <button class="control-btn minimize-btn" onclick="minimizeWindow()" title="Minimizar">−</button>
+        <button class="control-btn close-btn" onclick="closeWindow()" title="Fechar">×</button>
+    </div>
+    <div class="container">
+        <header class="header">
+            <img src="youpostmylike-transparent.png" alt="Logo" class="header-icon">
+            <div class="header-text">
+                <h1>Seu Post Meu Like</h1>
+                <p>Comunidade de engajamento e curtição</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="notifications-header">
+                <h2>📢 Notificações</h2>
+                <p>Postagens recentes da comunidade para você interagir</p>
+            </div>
+
+            <div class="notifications-list" id="notificationsList">
+                <!-- Exemplo de cards de notificação -->
+                <div class="notification-card">
+                    <div class="post-info">
+                        <div class="post-title">Como implementar Clean Architecture em projetos Node.js</div>
+                        <div class="post-author">João Silva</div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn visit-btn" onclick="visitPost('https://linkedin.com/posts/joao-silva-123')">
+                            🔗 Visitar
+                        </button>
+                        <button class="action-btn like-btn" onclick="toggleLike(this)">
+                            ❤️ Curtir
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notification-card">
+                    <div class="post-info">
+                        <div class="post-title">5 dicas para melhorar performance em React</div>
+                        <div class="post-author">Maria Santos</div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn visit-btn" onclick="visitPost('https://linkedin.com/posts/maria-santos-456')">
+                            🔗 Visitar
+                        </button>
+                        <button class="action-btn like-btn" onclick="toggleLike(this)">
+                            ❤️ Curtir
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notification-card">
+                    <div class="post-info">
+                        <div class="post-title">Introdução ao TypeScript para iniciantes</div>
+                        <div class="post-author">Carlos Oliveira</div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn visit-btn" onclick="visitPost('https://linkedin.com/posts/carlos-oliveira-789')">
+                            🔗 Visitar
+                        </button>
+                        <button class="action-btn like-btn" onclick="toggleLike(this)">
+                            ❤️ Curtir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="back-btn" onclick="goBack()">← Voltar</button>
+    </div>
+
+    <script>
+        function minimizeWindow() {
+            if (window.electronAPI) {
+                window.electronAPI.minimizeToTray();
+            }
+        }
+
+        function closeWindow() {
+            if (window.electronAPI) {
+                window.electronAPI.closeApp();
+            }
+        }
+
+        function visitPost(url) {
+            if (window.electronAPI) {
+                window.electronAPI.openExternal(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        function toggleLike(button) {
+            button.classList.toggle('liked');
+            const isLiked = button.classList.contains('liked');
+            button.innerHTML = isLiked ? '❤️ Curtido' : '❤️ Curtir';
+            
+            // Aqui você pode adicionar lógica para salvar o estado do like
+            console.log('Post', isLiked ? 'curtido' : 'descurtido');
+        }
+
+        function goBack() {
+            // Navegar de volta para a página principal
+            window.location.href = 'index.html';
+        }
+
+        // Função para carregar notificações dinâmicas (exemplo)
+        function loadNotifications() {
+            // Aqui você pode implementar a lógica para carregar notificações reais
+            // Por exemplo, fazer uma requisição para uma API
+            console.log('Carregando notificações...');
+        }
+
+        // Carregar notificações quando a página for carregada
+        document.addEventListener('DOMContentLoaded', loadNotifications);
+    </script>
+</body>
+</html>

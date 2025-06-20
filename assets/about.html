@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - Seu Post Meu Like</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .about-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .app-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .app-name {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .app-version {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .app-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .tech-stack {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack h3 {
+            color: #667eea;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .tech-item {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .author {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .features h3 {
+            color: #333;
+            font-size: 1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .features ul {
+            list-style: none;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .features li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="about-container">
+        <div class="app-icon">🚀</div>
+        <div class="app-name">Seu Post Meu Like</div>
+        <div class="app-version">Versão 1.0.0</div>
+        
+        <div class="app-description">
+            Aplicativo multiplataforma moderno com suporte completo ao systray, 
+            desenvolvido com as melhores tecnologias web.
+        </div>
+
+        <div class="features">
+            <h3>Recursos</h3>
+            <ul>
+                <li>Systray (bandeja do sistema)</li>
+                <li>Multiplataforma (Win/Mac/Linux)</li>
+                <li>Interface moderna e responsiva</li>
+                <li>Notificações nativas</li>
+                <li>TypeScript para maior segurança</li>
+            </ul>
+        </div>
+
+        <div class="tech-stack">
+            <h3>Tecnologias</h3>
+            <div class="tech-list">
+                <span class="tech-item">Electron</span>
+                <span class="tech-item">TypeScript</span>
+                <span class="tech-item">Node.js</span>
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">CSS3</span>
+            </div>
+        </div>
+
+        <div class="author">
+            Desenvolvido com ❤️ por Seu Nome
+        </div>
+
+        <button class="close-btn" onclick="window.close()">Fechar</button>
+    </div>
+</body>
+</html>

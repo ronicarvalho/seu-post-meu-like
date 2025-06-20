@@ -1,0 +1,40 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ee5a52;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="128" cy="128" r="120" fill="url(#mainGradient)" stroke="#fff" stroke-width="4"/>
+  
+  <!-- Post icon (document) -->
+  <rect x="80" y="60" width="96" height="120" rx="8" fill="#fff" opacity="0.9"/>
+  <rect x="90" y="80" width="76" height="4" rx="2" fill="#667eea" opacity="0.7"/>
+  <rect x="90" y="95" width="60" height="4" rx="2" fill="#667eea" opacity="0.5"/>
+  <rect x="90" y="110" width="70" height="4" rx="2" fill="#667eea" opacity="0.5"/>
+  <rect x="90" y="125" width="50" height="4" rx="2" fill="#667eea" opacity="0.5"/>
+  
+  <!-- Heart (like) icon -->
+  <path d="M128 200 C120 190, 100 170, 100 150 C100 140, 108 130, 118 130 C123 130, 128 135, 128 135 C128 135, 133 130, 138 130 C148 130, 156 140, 156 150 C156 170, 136 190, 128 200 Z" fill="url(#heartGradient)"/>
+  
+  <!-- Sparkle effects -->
+  <circle cx="200" cy="80" r="3" fill="#fff" opacity="0.8"/>
+  <circle cx="60" cy="100" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="190" cy="180" r="2.5" fill="#fff" opacity="0.7"/>
+  <circle cx="70" cy="200" r="2" fill="#fff" opacity="0.5"/>
+  
+  <!-- Plus signs for social media feel -->
+  <g fill="#fff" opacity="0.6">
+    <rect x="48" y="58" width="2" height="8" rx="1"/>
+    <rect x="44" y="62" width="8" height="2" rx="1"/>
+    
+    <rect x="200" y="200" width="2" height="8" rx="1"/>
+    <rect x="196" y="204" width="8" height="2" rx="1"/>
+  </g>
+</svg>
